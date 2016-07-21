@@ -1,2 +1,1 @@
-# blog-boilerplate
-blog-boilerplate
+##### 博客示例相关代码
