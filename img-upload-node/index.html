@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    #progress span {color: red}
+  </style>
+</head>
+
+<body>
+  <input type="file" name="" value="" id="upload">
+  <p style="display:none" id="progress">进度 <span></span>%</p>
+  <div id="preview"></div>
+</body>
+<script>
+  document.querySelector('#upload').addEventListener('change', function () {
+    var file = this.files[0]
+    preview(file)
+    uploadFile(file)
+  })
+
+  function preview(file) {
+    var reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = function(e) {
+      document.getElementById('preview').innerHTML = `<img src=${e.target.result} />`
+    }
+  }
+  function uploadFile(file) {
+    var xhr = new XMLHttpRequest()
+
+    var formdata = new FormData()
+    formdata.append("file", file)
+
+    xhr.open('POST', '/upload')
+    xhr.onload = function() {
+      if(xhr.status == 200) {
+        var data = JSON.parse(xhr.responseText) 
+        if(data.code == 0) {
+          alert(data.info)
+        }
+      }
+    }
+    xhr.upload.addEventListener('progress', function(e) {
+      document.getElementById('progress').style.display = 'block'
+      if(e.lengthComputable) {
+        var percent = Math.round(e.loaded/e.total*100)
+        document.querySelector('#progress span').innerText = percent
+      }
+    }, false)
+    xhr.send(formdata)
+  }
+</script>
+
+</html>
