@@ -5,10 +5,10 @@ const http = require('http'),
 
 var app = express()
 
-router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
-})
-
+app.use(express.static(path.join(__dirname)))
+// router.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'index.html'))
+// })
 
 router.post('/upload', (req, res) => {
   setTimeout(() => {
