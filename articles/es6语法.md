@@ -194,24 +194,58 @@ x // 1
 let [x = 1] = [null];
 x // null
 
-function move({x = 0, y = 0} = {}) {
+以前
+function log(x, y) {
+  if (typeof y === 'undefined') {
+    y = 'World';
+  }
+  console.log(x, y);
+}
+
+log('Hello') // Hello World
+log('Hello', 'China') // Hello China
+log('Hello', '') // Hello World
+
+现在
+function log(x, y = 'World') {
+  console.log(x, y);
+}
+
+log('Hello') // Hello World
+log('Hello', 'China') // Hello China
+log('Hello', '') // Hello
+
+
+// 写法一
+function m1({x = 0, y = 0} = {}) {
   return [x, y];
 }
 
-move({x: 3, y: 8}); // [3, 8]
-move({x: 3}); // [3, 0]
-move({}); // [0, 0]
-move(); // [0, 0]
-
-function move({x, y} = { x: 0, y: 0 }) {
+// 写法二
+function m2({x, y} = { x: 0, y: 0 }) {
   return [x, y];
 }
 
-move({x: 3, y: 8}); // [3, 8]
-move({x: 3}); // [3, undefined]
-move({}); // [undefined, undefined]
-move(); // [0, 0]
-```
+// 函数没有参数的情况
+m1() // [0, 0]
+m2() // [0, 0]
+
+// x和y都有值的情况
+m1({x: 3, y: 8}) // [3, 8]
+m2({x: 3, y: 8}) // [3, 8]
+
+// x有值，y无值的情况
+m1({x: 3}) // [3, 0]
+m2({x: 3}) // [3, undefined]
+
+// x和y都无值的情况
+m1({}) // [0, 0];
+m2({}) // [undefined, undefined]
+
+m1({z: 3}) // [0, 0]
+m2({z: 3}) // [undefined, undefined]
+
+
 ### 用途
 
 交换变量的值
@@ -221,7 +255,7 @@ let y = 2;
 
 [x, y] = [y, x];
 
-提取数据 
+提取JSON数据 
 ```
 //Function 
 function example() {
@@ -263,3 +297,90 @@ function f({x=1, y, z}) {
 f({z: 3, y: 2}); // 6
 ```
 
+# 模板字符串
+
+拼接
+```
+以前
+var hello = 'hello'
+var hi = hello + 'world'
+现在
+var hi  = `${hello}`
+```
+
+# 函数的扩展
+
+rest 参数（形式为 ...变量名）
+作用： 用于获取函数的多余参数，参数中的变量代表一个数组
+
+```
+function add(...values) {
+  //values = [2, 5, 3]
+  let sum = 0;
+
+  values.forEach(function(i) {
+    sum += i
+  })
+
+  return sum;
+}
+add(2, 5, 3) // 10
+
+
+// arguments变量的写法
+function sortNumbers() {
+  return Array.prototype.slice.call(arguments).sort();
+}
+
+// rest参数的写法
+const sortNumbers = function(...numbers){
+  numbers.sort();
+}
+
+```
+
+tips: rest 参数之后不能再有其他参数（即只能是最后一个参数），否则会报错
+
+```
+// 报错
+function f(a, ...b, c) {
+  // ...
+}
+```
+
+## 扩展运算符
+作用：  将一个数组转为用逗号分隔的参数序列，rest 参数的逆运算
+
+```
+// ES5的写法
+Math.max.apply(null, [14, 3, 77])
+
+// ES6的写法
+Math.max(...[14, 3, 77])
+
+// 等同于
+Math.max(14, 3, 77);
+
+```
+
+### 应用
+
+合并数组
+```
+// ES5
+[1, 2].concat(more)
+// ES6
+[1, 2, ...more]
+
+var arr1 = ['a', 'b'];
+var arr2 = ['c'];
+var arr3 = ['d', 'e'];
+
+// ES5的合并数组
+arr1.concat(arr2, arr3);
+// [ 'a', 'b', 'c', 'd', 'e' ]
+
+// ES6的合并数组
+[...arr1, ...arr2, ...arr3]
+// [ 'a', 'b', 'c', 'd', 'e' ]
+```
