@@ -1,36 +1,49 @@
+# 什么是ES6
+
+* 在2015年6月17日，ECMAScript的第六个版本正式发布，该版本正式名称为ECMAScript 2015，但通常被称为ECMAScript 6或者ES6。泛指下一代Javascript语言  {:&.moveIn}
+
+![](https://camo.githubusercontent.com/012b130318bb1ae2aa0d5e77bff312e4a493bc68/687474703a2f2f61647269616e6d656a69612e636f6d2f696d616765732f686973746f72792d6a6176617363726970742d65766f6c7574696f6e2d6573362e706e67)
+
+![](http://img.blog.csdn.net/20160616163138901) 
+
+![](http://ubq.ubiaoqing.com/ubiaoqing25a274de2a93517009e8219045916a53.jpg)
+
 # let 和 const 命令
 
-## 作用： 声明变量
+* 作用： 声明变量 {:&.moveIn}
+
 ### 与var区别
-  1. 块级作用域
-  ```
-  {
-    let a = 10;
-    var b = 1;
-    const c = 11
-  }
 
-  console.log(a)
-  //console.log(b)
-  //console.log(c)
+块级作用域
+```
+{
+  let a = 10;
+  var b = 1;
+  const c = 11
+}
 
-  var a = [];
-  for (var i = 0; i < 10; i++) {
-    a[i] = function () {
-      console.log('var ' + i);
-    };
-  }
-  a[6]();
+console.log(a) //报错
+console.log(b) //1
+console.log(c) //报错
 
-  var a = [];
-  for (let i = 0; i < 10; i++) {
-    a[i] = function () {
-      console.log('let ' + i);
-    };
-  }
-  a[6]();
-  ```
-  2. 不存在变量提升
+var a = [];
+for (var i = 0; i < 10; i++) {
+  a[i] = function () {
+    console.log('var ' + i);
+  };
+}
+a[6](); //10
+
+var a = [];
+for (let i = 0; i < 10; i++) {
+  a[i] = function () {
+    console.log('let ' + i);
+  };
+}
+a[6](); //6
+```
+
+  不存在变量提升
 
   ```
   // var 的情况
@@ -42,20 +55,21 @@
   let bar = 2;
   ```
 
-  3. 暂时性死区
 
-  理解：绑定作用域，不允许使用未声明的变量。
+暂时性死区
 
-  ```
-  var tmp = 123;
+理解：绑定作用域，不允许使用未声明的变量。
 
-  if (true) {
-    tmp = 'abc'; // ReferenceError
-    let tmp;
-  }
-  ```
+```
+var tmp = 123;
 
-  4. 不允许重复声明
+if (true) {
+  tmp = 'abc'; // ReferenceError
+  let tmp;
+}
+```
+
+  不允许重复声明
 
   ```
   // 报错
@@ -71,9 +85,11 @@
   }
   ```
 
-### const使用
+### const声明
 
-  不可改变引用地址，只可改变引用对象
+* 作用：创建一个只读的常量。这不意味着常量指向的值不可变，而是变量标识符的值只能赋值一次不可改变引用地址，只可改变引用对象。 {:&.moveIn}
+
+![](https://www.processon.com/chart_image/58a6999ae4b0669d994df30c.png)
 
  ```
   const foo = {};
@@ -85,27 +101,25 @@
   foo = {}; // TypeError: "foo" is read-only
   
   ```
+
 # 变量的解构赋值
 
-## 作用：从数组和对象中相应位置提取值，对变量进行赋值
-解构时不是数组或者对象的都会转化成类似数组的对象
+* 作用：从数组和对象中相应位置提取值，对变量进行赋值解构时不是数组或者对象的都会转化成类似数组的对象  {:&.moveIn}
 
 ### 数组
 ```
-//以前
 let a = 1;
 let b = 2;
 let c = 3;
-//现在
+
 let [a, b, c] = [1, 2, 3];
 let [foo, [[bar], baz]] = [1, [[2], 3]];
 //不完全解构，只匹配对应的值
 let [x, , y] = [1, 2, 3];
-
+//x=1;y=3
 
 let { log, sin, cos } = Math;
 ```
-如果位置不一致，变量的值就等于undefined
 
 ### 对象
 
@@ -114,9 +128,8 @@ let { foo, bar } = { foo: "aaa", bar: "bbb" };
 foo // "aaa"
 bar // "bbb
 ```
-`与数组解构的不同点`
-数组根据元素的位置而来，对象根据属性名
 
+与数组解构的不同点： 数组根据元素的位置而来，对象根据属性名
 ```
 let { bar, foo } = { foo: "aaa", bar: "bbb" };
 foo // "aaa"
@@ -125,13 +138,13 @@ bar // "bbb"
 let { baz } = { foo: "aaa", bar: "bbb" };
 baz // undefined
 ```
-如果提取的属性名跟变量名不一样
+
+如果提取的属性名跟变量名不一样，真正被赋值的是后者，不是前者
 ```
 let { first: f, last: l } = { first: 'hello', last: 'world' };
 f // 'hello'
 l // 'world'
 ```
-真正被赋值的是后者，不是前者
 
 复杂的嵌套对象
 ```
@@ -183,7 +196,9 @@ now([1, 2]); // 3
 ```
 
 ### 默认值
+
 触发条件： 严格相等undefined
+
 ```
 let [foo = true] = [];
 foo // true
@@ -194,7 +209,7 @@ x // 1
 let [x = 1] = [null];
 x // null
 
-以前
+//以前
 function log(x, y) {
   if (typeof y === 'undefined') {
     y = 'World';
@@ -206,7 +221,7 @@ log('Hello') // Hello World
 log('Hello', 'China') // Hello China
 log('Hello', '') // Hello World
 
-现在
+//现在
 function log(x, y = 'World') {
   console.log(x, y);
 }
@@ -214,8 +229,9 @@ function log(x, y = 'World') {
 log('Hello') // Hello World
 log('Hello', 'China') // Hello China
 log('Hello', '') // Hello
+```
 
-
+```
 // 写法一
 function m1({x = 0, y = 0} = {}) {
   return [x, y];
@@ -244,6 +260,7 @@ m2({}) // [undefined, undefined]
 
 m1({z: 3}) // [0, 0]
 m2({z: 3}) // [undefined, undefined]
+```
 
 
 ### 用途
@@ -254,6 +271,7 @@ let x = 1;
 let y = 2;
 
 [x, y] = [y, x];
+```
 
 提取JSON数据 
 ```
@@ -279,6 +297,7 @@ console.log(id, status, number);
 // 42, "OK", [867, 5309]
 ```
 
+
 函数参数的定义
 
 ```
@@ -288,6 +307,7 @@ function f({x, y, z}) {
 f({z: 3, y: 2, x: 1}); // 6
 ```
 
+
 函数参数的默认值
 
 ```
@@ -296,6 +316,7 @@ function f({x=1, y, z}) {
 }
 f({z: 3, y: 2}); // 6
 ```
+
 
 # 模板字符串
 
@@ -308,10 +329,12 @@ var hi = hello + 'world'
 var hi  = `${hello}`
 ```
 
+
+
 # 函数的扩展
 
-rest 参数（形式为 ...变量名）
-作用： 用于获取函数的多余参数，参数中的变量代表一个数组
+### rest 参数（形式为 ...变量名）
+* 作用： 用于获取函数的多余参数，参数中的变量代表一个数组 {:&.moveIn}
 
 ```
 function add(...values) {
@@ -326,7 +349,6 @@ function add(...values) {
 }
 add(2, 5, 3) // 10
 
-
 // arguments变量的写法
 function sortNumbers() {
   return Array.prototype.slice.call(arguments).sort();
@@ -336,10 +358,10 @@ function sortNumbers() {
 const sortNumbers = function(...numbers){
   numbers.sort();
 }
-
 ```
 
-tips: rest 参数之后不能再有其他参数（即只能是最后一个参数），否则会报错
+
+* tips: rest 参数之后不能再有其他参数（即只能是最后一个参数），否则会报错
 
 ```
 // 报错
@@ -348,8 +370,12 @@ function f(a, ...b, c) {
 }
 ```
 
+
 ## 扩展运算符
-作用：  将一个数组转为用逗号分隔的参数序列，rest 参数的逆运算
+
+* 作用： 将一个数组转为用逗号分隔的参数序列，rest 参数的逆运算 {:&.moveIn}
+* 理解： 在需要传一个或多个参数的时候，用数组代替
+
 
 ```
 // ES5的写法
@@ -363,16 +389,11 @@ Math.max(14, 3, 77);
 
 ```
 
+
 ### 应用
 
 合并数组
 ```
-var more = [3, 4]
-// ES5
-[1, 2].concat(more)
-// ES6
-[1, 2, ...more]
-
 var arr1 = ['a', 'b'];
 var arr2 = ['c'];
 var arr3 = ['d', 'e'];
@@ -386,6 +407,7 @@ arr1.concat(arr2, arr3);
 // [ 'a', 'b', 'c', 'd', 'e' ]
 ```
 
+
 与解构赋值结合
 
 扩展运算符可以与解构赋值结合起来，用于生成数组。
@@ -394,50 +416,40 @@ arr1.concat(arr2, arr3);
 const [first, ...rest] = [1, 2, 3, 4, 5];
 first // 1
 rest  // [2, 3, 4, 5]
-
-const [first, ...rest] = [];
-first // undefined
-rest  // []:
-
-const [first, ...rest] = ["foo"];
-first  // "foo"
-rest   // []
 ```
+
 
 ## 箭头函数
 
-作用： 使用“箭头”（=>）定义函数
+* 作用： 使用“箭头”（=>）定义函数 {:&.moveIn}
+
 
 ```
-以前
-var f = function(v) {
-  return v;
-};
-现在
-var f = v => v;
-
 //如果箭头函数不需要参数或需要多个参数，就使用一个圆括号代表参数部分。
-var f = () => 5;
-// 等同于
-var f = function () { return 5 };
 
 var sum = (num1, num2) => num1 + num2;
-// 等同于
+
+// 相当于
 var sum = function(num1, num2) {
   return num1 + num2;
 };
 
-//如果想返回一个对象，必须在对象外面加上括号。
-var getTempItem = id => ({ id: id, name: "Temp" });
-
-//箭头函数可以与变量解构结合使用
-const full = ({ first, last }) => first + ' ' + last;
-
-// 等同于
-function full(person) {
-  return person.first + ' ' + person.last;
+var sum1 = (num1, num2) => {
+  num1++
+  return num1 + num2;
 }
 
+var f = v => v
+
+//相当于
+var f = function(v) {
+  return v
+}
+
+```
+
+
+```
 简化回调函数
 // 正常函数写法
 var result = values.sort(function (a, b) {
@@ -447,41 +459,42 @@ var result = values.sort(function (a, b) {
 // 箭头函数写法
 var result = values.sort((a, b) => a - b);
 
-
-//rest参数与箭头函数结合的例子
-const numbers = (...nums) => nums;
-
-numbers(1, 2, 3, 4, 5)
-// [1,2,3,4,5]
-
 ```
+
+
 注意点
-函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象
-箭头函数中是不可变的 不能用bind, call, apply更改宿主元素
-```
-// ES5
-function foo() {
-  var _this = this;
+* 函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象 {:&.moveIn}
 
-  setTimeout(function () {
-    console.log('id:', _this.id);
-  }, 100);
-}
-// es6
-function foo() {
-  setTimeout(() => {
-    console.log('id:', this.id);
-  }, 100);
-}
-var id = 21;
-foo.call({ id: 42 });
-// id: 42
 ```
+var id = 'outer'
+var foo = {
+  id: 'shein',
+  run: function() {
+    setTimeout(function() {
+      console.log(this.id)
+    })
+  }
+}
+foo.run() //outer
+
+var foo1 = {
+  id: 'shein',
+  run: function() {
+    setTimeout(()=> {
+      console.log(this.id)
+    })
+  }
+}
+
+foo1.run() //shein
+```
+
 
 # 对象的扩展
 
+
 ## 属性的简洁表示法
-作用： 写对象字面量时直接写入变量和函数，作为对象的属性和方法
+* 作用： 写对象字面量时直接写入变量和函数，作为对象的属性和方法 {:&.moveIn}
 
 ```
 var foo = 'bar';
@@ -501,8 +514,10 @@ var o = {
   }
 };
 ```
+
 ## 属性名表达式
-作用： 对象属性名可以用表达式表示
+* 作用： 对象属性名可以用表达式表示 {:&.moveIn}
+
 ```
 // 方法一
 obj.foo = true;
@@ -510,10 +525,8 @@ obj.foo = true;
 // 方法二
 obj['a' + 'bc'] = 123;
 ```
-
-es6
-
 ```
+//es6
 let propKey = 'foo';
 
 let obj = {
@@ -527,17 +540,17 @@ let obj = {
 
 # Promise对象
 
-## 描述： 
-简单说就是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果
-它允许你为异步操作的事件结果"成功返回的值"或"失败"绑定一个处理方法。 这使得异步方法可以像同步方法那样返回值：不同于立即返回最终结果, 异步方法返回一个promise对象,
+* 描述： 简单说就是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。它允许你为异步操作的事件结果"成功返回的值"或"失败"绑定一个处理方法。 这使得异步方法可以像同步方法那样返回值：不同于立即返回最终结果, 异步方法返回一个promise对象。 {:&.moveIn}
+
 
 Promise有以下几种状态:
 
-pending: 初始状态, 既不是 fulfilled 也不是 rejected.
-fulfilled: 表示操作被成功完成.  
-rejected: 表示该操作失败.
+* pending: 初始状态, 既不是 fulfilled 也不是 rejected.
+* fulfilled: 表示操作被成功完成.  
+* rejected: 表示该操作失败.
 
-#### Promise.prototype.then(onFulfilled, onRejected)
+
+* Promise.prototype.then(onFulfilled, onRejected)方法
 
 ```
 var promise = new Promise(function(resolve, reject) {
@@ -552,19 +565,18 @@ var promise = new Promise(function(resolve, reject) {
 promise.then(successFn, errorFn)
 ```
 
-#### Promise.prototype.catch
-其实是Promise.prototype.then(null, rejection)的别名,用于指定发生错误时的回调函数。
-Promise对象的错误具有“冒泡”性质，会一直向后传递，直到被捕获为止。也就是说，错误总是会被下一个catch语句捕获。
+#### Promise.prototype.catch方法
+* 其实是Promise.prototype.then(null, rejection)的别名,用于指定发生错误时的回调函数。
+* Promise对象的错误具有“冒泡”性质，会一直向后传递，直到被捕获为止。也就是说，错误总是会被下一个catch语句捕获。
 
 ```
+//相当于
 promise.then(null, errorFn)
 ```
 
-![img](http://p0.qhimg.com/t016690930b5486b0b2.png)
-
 
 ```
-回调地狱
+//回调地狱
 function fetchData(done){
   $.ajax({
     url1,
@@ -572,21 +584,24 @@ function fetchData(done){
       $.ajax({
         url2,
         data: value1,
-        success(value1) {
-          done(value2）
+        success(value2) {
+          // do something ...
         },
         error(err) {
           
         }
       })
+    },
+    error() {
+      
     }
   })
 }
 
-fetchData((data) => {
-  //do something ...
-}）
+fetchData(）
+```
 
+```
 
 链式调用
 function fetcData1() {
@@ -625,32 +640,43 @@ fetcData1().then(function(value) {
 });
 ```
 
+![img](http://p0.qhimg.com/t016690930b5486b0b2.png)
+
 
 # Module 的语法
-## export 语句用于从给定的文件 (或模块) 中导出函数，对象
-module a.js
-1. 命名导出
-``
+## export 语句
+* 作用： 用于从给定的文件 (或模块) 中导出函数，对象 {:&.moveIn}
+
+
+
+### 命名导出
+
+```
+//module a.js
 var myFunction = function() {
 
 }
 export { myFunction }; // 导出一个函数声明
 export const foo = Math.sqrt(2); // 导出一个常量
-``
-2. 默认导出 (每个脚本只能有一个)：
+```
+
+### 默认导出 (每个脚本只能有一个)
 
 ```
 export default myFunctionOrClass 
 ```
 
-于只导出一部分值来说，命名导出的方式很有用。在导入时候，可以使用相同的名称来引用对应导出的值。
+* 对于只导出一部分值来说，命名导出的方式很有用。在导入时候，可以使用相同的名称来引用对应导出的值。{:&.moveIn}
 
-关于默认导出方式，每个模块只有一个默认导出。一个默认导出可以是一个函数，一个类，一个对象等。当最简单导入的时候，这个值是将被认为是”入口”导出值。
+* 关于默认导出方式，每个模块只有一个默认导出。一个默认导出可以是一个函数，一个类，一个对象等。当最简单导入的时候，这个值是将被认为是”入口”导出值。 {:&.moveIn}
 
 
-## import 语句用于导入从外部模块，另一个脚本等导出的函数，对象
-module b.js
+## import 语句
+* 用于导入从外部模块，另一个脚本等导出的函数，对象,值 {:&.moveIn}
 
 ```
-import a, {myFunction, foo} from './a'
+//module b.js
+import aClass, {myFunction, foo} from './a'
 ```
+
+![](http://ubq.ubiaoqing.com/ubiaoqing57fd14a8c4a2d21791.jpg)
