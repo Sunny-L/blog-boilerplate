@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>bfcache</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="app"></div>
+    <a href="item.html">go item.html</a>
+  </body>
+  <script>
+    var currentTime = Date.now()
+    document.querySelector('.app').textContent = currentTime
+    window.addEventListener('load', e => {
+      console.log('load');
+    })
+    window.addEventListener('pageshow', e => {
+      // alert(e.persisted)
+      console.log('pageshow');
+    })
+    window.addEventListener('pagehide', e => {
+      alert('pagehide')
+    })
+
+    window.addEventListener("beforeunload", function (e) {
+      var confirmationMessage = "\o/";
+
+      (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+      return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+    });
+  </script>
+</html>
