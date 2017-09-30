@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="./node_modules/zepto/dist/zepto.js"></script> -->
+  <script src="./node_modules/jquery/dist/jquery.js"></script>
+  <style>
+    .parent {
+      padding: 20px;
+      background: #00aaff;
+    }
+
+    .child {
+      padding: 10px;
+      background: green;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="parent">
+      parent
+      <p class="child">
+        child
+      </p>
+      <p class="child">
+        child1
+        <span class="subchild"> sub child</span>
+      </p>
+      <a href="http://www.baidu.com" class="go">go</a> checkbox <input type="checkbox" class="checkbox">
+      <div class="one">once</div>
+    </div>
+    <div class="anthor">anthor </div>
+  </div>
+</body>
+<script>
+  document.querySelector('.checkbox').addEventListener('click', e => {
+    e.preventDefault()
+    e.stopPropagation()
+  })
+  // document.querySelector('.go').addEventListener('click', e => {
+  //   // e.preventDefault()
+  // })
+
+  var parent = document.querySelector('.parent')
+  var child = document.querySelector('.child')
+  // parent.addEventListener('click', function(e) {
+  //   console.log(e);
+  //   console.log('parent click ...')
+  // })
+  // child.addEventListener('click', function(e) {
+  //   e.stopPropagation()
+  //   console.log('native child click ...')
+  // })
+
+  // $('.one').click(e => {
+  //   console.log( 'click one ...');
+  // })
+
+  // $(document).on('click', '.go', e => {
+  //   e.stopPropagation()
+  //   e.preventDefault()
+  // })
+
+  
+  $(document).on('click', '.parent', function(e) {
+    // console.log('parent click ...')
+  })
+  $(document).on('click', '.child',function (e) {
+    e.stopPropagation()
+    console.log('child click ...')
+  })
+  $(document).on('click', '.anthor',function (e) {
+    e.stopPropagation()
+    console.log('anthor click ...')
+  })
+</script>
+
+</html>
