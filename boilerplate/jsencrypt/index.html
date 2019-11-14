@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://travistidwell.com/jsencrypt/bin/jsencrypt.js"></script>
+</head>
+<body>
+    <input type="text" id="value"/>
+    <input type="button" onclick="submit()" value="submit">
+    <script>
+        var publicKey = '<%-JSON.stringify(publicKey)%>'
+        function submit() {
+            var val = document.querySelector('#value').value
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey(publicKey);
+            val = encrypt.encrypt(val)
+            fetch('/h5/jsencrypt',{
+                method: 'POST',
+                body: JSON.stringify({val}),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
+            }).then(res => res.json())
+            .then(res => console.log(res))
+        }
+    </script>
+</body>
+</html>
